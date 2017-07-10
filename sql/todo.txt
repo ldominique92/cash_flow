@@ -1,0 +1,35 @@
+7) Verificar data do próximo negativo
+8) Uma home bonita
+9) Item selecionado do menu
+10) Validar forms
+12) deixar isso bonito pelo amor de Deus
+13) paginação de grids
+14) colocar loading nos grids
+15) autenticar API
+16) anexar comprovante
+15) salvar usuário do registro
+16) datepicker
+17) Valor do lançamento
+18) Histórico de lançamentos
+19) Upload de comprovante
+20) Saldo diário
+21) Editar entrada
+22) Code analisys
+23) Unity Test
+24) Formatar dinheiro com virgula
+25) melhorar ajax do relatório
+26) no relatório, se não houver saldo inicial no dia anterior, pegar o último. Se não existir, pegar 0
+27) colocar usuário também no usuário
+28) ordenar GRIDS
+29) busca de histórico por usuário
+30) detalhe do histórico
+31) confirms
+32) return histórico
+33) sql injection
+34) permissão para visualizar
+35) resetar senha
+36) colocar disable no username e lower case
+37) logout
+35) configurações do app
+4) Usuários online
+6) Ultimo acesso

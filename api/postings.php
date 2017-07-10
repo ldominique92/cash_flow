@@ -1,0 +1,186 @@
+<?php
+
+$table = 'tbl_postings';
+
+date_default_timezone_set("America/Sao_Paulo");
+$action_date = date("Y-m-d h:i:s");
+$action_user = 0;
+
+// get the HTTP method, path and body of the request
+$method = $_SERVER['REQUEST_METHOD'];
+$request = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
+$input = json_decode(file_get_contents('php://input'),true);
+$pop = array_pop($request);
+$key = is_numeric($pop) ? $pop+0 : 0;
+
+include 'connection.php';
+
+// build the SET part of the SQL command
+$set = '';
+if($method != 'GET' && $method != 'DELETE') {
+    $columns = preg_replace('/[^a-z0-9_]+/i','',array_keys($input));
+    $values = array_map(function ($value) use ($link) {
+        if ($value===null) return null;
+        return mysqli_real_escape_string($link,(string)$value);
+    },array_values($input));
+
+    for ($i = 0; $i < count($columns); $i++) {
+        $set .= ($i > 0 ? ',' : '') . '`' . $columns[$i] . '`=';
+        $set .= ($values[$i] === null ? 'NULL' : '"' . $values[$i] . '"');
+    }
+}
+else if($method == 'GET' && $key == 0)
+{
+    $method = 'SEARCH';
+    $due_date_begin = $_GET["due_date_begin"];
+    $due_date_end = $_GET["due_date_end"];
+}
+
+// recover data to history
+if ($method == 'PUT'|| $method == 'DELETE') {
+    $sql = "select * from `$table`".($key?" WHERE id=$key":'');
+    $old_result = mysqli_query($link,$sql);
+
+    $row = mysqli_fetch_object($old_result);
+}
+
+// create SQL based on HTTP method
+switch ($method) {
+    case 'GET':
+        $sql = "select * from `$table`".($key?" WHERE id=$key":''); break;
+    case 'SEARCH':
+        $sql = "SELECT p.id, p.money_signal, p.due_date, p.description, pt.description as type, c.name as costumer, p.receipt ".
+               "FROM tbl_postings as p ".
+               "INNER JOIN tbl_posting_types as pt on p.type = pt.id ".
+               "INNER JOIN tbl_costumers as c on p.costumer = c.id ".
+               "WHERE due_date >= '$due_date_begin' and due_date <= '$due_date_end'";
+        break;
+    case 'PUT':
+        $sql = "update `$table` set $set where id=$key"; break;
+    case 'POST':
+        $sql = "insert into `$table` set $set"; break;
+    case 'DELETE':
+        $sql = "delete from `$table` where id=$key"; break;
+}
+
+// excecute SQL statement
+$result = mysqli_query($link,$sql);
+
+// die if SQL statement failed
+if (!$result) {
+    http_response_code(500);
+    die(mysqli_error());
+}
+
+// history
+$insert_id = 0;
+if ($method == 'POST') {
+    $insert_id = mysqli_insert_id($link);
+
+    $sql = "INSERT INTO tbl_posting_history(posting_id, `action`, action_date, action_user)
+                VALUES(".$insert_id.", 'A', '".$action_date."', ".$action_user.")";
+
+    $history = mysqli_query($link,$sql);
+    if (!$history) {
+        http_response_code(500);
+        die(mysqli_error());
+    }
+}
+else if($method == "PUT" || $method == "DELETE") {
+
+    $action = "D";
+    if ($method == 'PUT') {
+        $action = "U";
+    }
+
+    $sql = "INSERT INTO tbl_posting_history(posting_id, `action`, action_date, action_user, 
+                old_money_signal, old_due_date, old_description, old_type, old_costumer, old_receipt)
+                VALUES(".$row->id.",
+                       '".$action."',
+                       '".$action_date."', 
+                        ".$action_user.", 
+                       '".$row->money_signal."',
+                       '".$row->due_date."',
+                       '".$row->description."',
+                        ".$row->type.",
+                        ".$row->costumer.",
+                       '".$row->receipt."')";
+
+    $history = mysqli_query($link,$sql);
+    if (!$history) {
+        http_response_code(500);
+        die(mysqli_error());
+    }
+}
+
+// balance
+if ($method == 'POST') {
+    $sql = "SELECT * FROM tbl_posting WHERE id =".$insert_id;
+    $r_posting = mysqli_query($link,$sql);
+    if (!$r_posting) {
+        http_response_code(500);
+        die(mysqli_error());
+    }
+
+    $posting = mysqli_fetch_object($r_posting);
+    $value = $posting->money_value;
+    $signal = $posting->money_signal;
+    $due_date = $posting->due_date;
+
+    if($signal == "-") {
+        $value *= -1;
+    }
+
+    $sql = "SELECT * FROM tbl_balance WHERE date =".$insert_id;
+    $r_posting = mysqli_query($link,$sql);
+    if (!$r_posting) {
+        http_response_code(500);
+        die(mysqli_error());
+    }
+
+    $posting = mysqli_fetch_object($r_posting);
+
+
+
+
+}
+else if($method == "PUT" || $method == "DELETE") {
+
+    /*$action = "D";
+    if ($method == 'PUT') {
+        $action = "U";
+    }
+
+    $sql = "INSERT INTO tbl_posting_history(posting_id, `action`, action_date, action_user,
+                old_money_signal, old_due_date, old_description, old_type, old_costumer, old_receipt)
+                VALUES(".$row->id.",
+                       '".$action."',
+                       '".$action_date."',
+                        ".$action_user.",
+                       '".$row->money_signal."',
+                       '".$row->due_date."',
+                       '".$row->description."',
+                        ".$row->type.",
+                        ".$row->costumer.",
+                       '".$row->receipt."')";
+
+    $history = mysqli_query($link,$sql);
+    if (!$history) {
+        http_response_code(500);
+        die(mysqli_error());
+    }*/
+}
+
+// print results, insert id or affected row count
+if ($method == 'GET' || $method == 'SEARCH') {
+    if (!$key) echo '[';
+    for ($i=0;$i<mysqli_num_rows($result);$i++) {
+        echo ($i>0?',':'').json_encode(mysqli_fetch_object($result));
+    }
+    if (!$key) echo ']';
+} elseif ($method == 'POST') {
+    echo $insert_id;
+}
+
+// close mysql connection
+mysqli_close($link);
