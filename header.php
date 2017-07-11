@@ -111,7 +111,7 @@ $site_url = "http://localhost/fluxo_de_caixa/";
                     <a href="javascript:;" data-toggle="collapse" data-target="#fluxo"><i class="fa fa-fw fa-table"></i> Fluxo de Caixa<i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="fluxo" class="collapse">
                         <li>
-                            <a href="<?php echo ($site_url); ?>cash_flow/new_entry.php"> Lançamento</a>
+                            <a href="<?php echo ($site_url); ?>cash_flow/entry.php"> Lançamento</a>
                         </li>
                         <li>
                             <a href="<?php echo ($site_url); ?>cash_flow/date_search.php"> Relatório</a>
