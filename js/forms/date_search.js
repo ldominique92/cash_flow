@@ -58,6 +58,7 @@ function searchPostings() {
 
                 $('#postings-list tbody').html(postings);
                 deleteButtonBehaviour();
+                loadBalance();
             }
             else
             {
@@ -76,16 +77,19 @@ function loadBalance() {
         url: form_action + '?date=' + initial_day + '&type=initial',
         type: 'GET',
         success: function (result) {
-            $('#initial_balance').text(formatMoney(JSON.parse(result).value));
-        }
-    });
+            var initial_value = parseFloat(JSON.parse(result).value);
+            $('#initial_balance').text(formatMoney(initial_value));
 
-    var final_day = dateFormat($('#due_date_end').val());
-    $.ajax({
-        url: form_action + '?date=' + final_day + '&type=final',
-        type: 'GET',
-        success: function (result) {
-            $('#final_balance').text(formatMoney(JSON.parse(result).value));
+            var final_day = dateFormat($('#due_date_end').val());
+            $.ajax({
+                url: form_action + '?date=' + final_day + '&type=final',
+                type: 'GET',
+                success: function (result) {
+                    var final_value = initial_value + parseFloat(JSON.parse(result).value);
+
+                    $('#final_balance').text(formatMoney(final_value));
+                }
+            });
         }
     });
 }
@@ -100,5 +104,4 @@ function searchButtonBehaviour(){
 $(document).ready(function () {
     resetForm();
     searchButtonBehaviour();
-    loadBalance();
 });

@@ -115,61 +115,112 @@ else if($method == "PUT" || $method == "DELETE") {
 }
 
 // balance
-if ($method == 'POST') {
-    $sql = "SELECT * FROM tbl_posting WHERE id =".$insert_id;
-    $r_posting = mysqli_query($link,$sql);
-    if (!$r_posting) {
+if($method == 'PUT' || $method == 'POST' || $method == 'DELETE'){
+    if ($method == 'POST') {
+        $sql = "SELECT * FROM tbl_postings WHERE id =" . $insert_id;
+        echo ($sql);
+        $r_posting = mysqli_query($link, $sql);
+        if (!$r_posting) {
+            http_response_code(500);
+            die(mysqli_error());
+        }
+
+        $posting = mysqli_fetch_object($r_posting);
+        $value = $posting->money_value;
+        $signal = $posting->money_signal;
+        $due_date = $posting->due_date;
+
+        if ($signal == "-") {
+            $value *= -1;
+        }
+    }
+    else if($method == "PUT") {
+        $sql = "SELECT * FROM tbl_postings WHERE id =" . $key;
+        $r_posting = mysqli_query($link, $sql);
+        if (!$r_posting) {
+            http_response_code(500);
+            die(mysqli_error());
+        }
+
+        $posting = mysqli_fetch_object($r_posting);
+        $value = $posting->money_value;
+        $signal = $posting->money_signal;
+        $due_date = $posting->due_date;
+
+        if ($signal == "-") {
+            $value *= -1;
+        }
+
+        if($due_date == $row->due_date){
+
+            if($row->money_signal == "-"){
+                $value += $row->money_value;
+            }
+            else {
+                $value -= $row->money_value;
+            }
+        }
+        else
+        {
+            $sql = "SELECT * FROM tbl_balance WHERE date ='".$due_date."'";
+            $r_balance = mysqli_query($link,$sql);
+            if (!$r_balance) {
+                http_response_code(500);
+                die(mysqli_error());
+            }
+
+            $r_balance = mysqli_fetch_object($r_balance);
+            if(mysqli_num_rows($r_balance) > 0)
+            {
+                $balance = mysqli_fetch_object($r_balance);
+                $value = $balance->value + $value;
+
+                $sql = "UPDATE tbl_balance SET value=$value WHERE date ='".$due_date."'";
+                $r_balance = mysqli_query($link,$sql);
+                if (!$r_balance) {
+                    http_response_code(500);
+                    die(mysqli_error());
+                }
+            }
+        }
+    }
+    else if ($method == "DELETE") {
+        $value = $row->money_value;
+        $due_date = $row->due_date;
+
+        if ($row->money_signal == "+") {
+            $value *= -1;
+        }
+    }
+
+    $sql = "SELECT * FROM tbl_balance WHERE date ='".$due_date."'";
+    $r_balance = mysqli_query($link,$sql);
+    if (!$r_balance) {
         http_response_code(500);
         die(mysqli_error());
     }
 
-    $posting = mysqli_fetch_object($r_posting);
-    $value = $posting->money_value;
-    $signal = $posting->money_signal;
-    $due_date = $posting->due_date;
-
-    if($signal == "-") {
-        $value *= -1;
+    if(mysqli_num_rows($r_balance) == 0)
+    {
+        $sql = "INSERT INTO tbl_balance(date, value) VALUES ('".$due_date."', $value)";
+        $r_balance = mysqli_query($link,$sql);
+        if (!$r_balance) {
+            http_response_code(500);
+            die(mysqli_error());
+        }
     }
+    else
+    {
+        $balance = mysqli_fetch_object($r_balance);
+        $value = $balance->value + $value;
 
-    $sql = "SELECT * FROM tbl_balance WHERE date =".$insert_id;
-    $r_posting = mysqli_query($link,$sql);
-    if (!$r_posting) {
-        http_response_code(500);
-        die(mysqli_error());
+        $sql = "UPDATE tbl_balance SET value=$value WHERE date ='".$due_date."'";
+        $r_balance = mysqli_query($link,$sql);
+        if (!$r_balance) {
+            http_response_code(500);
+            die(mysqli_error());
+        }
     }
-
-    $posting = mysqli_fetch_object($r_posting);
-
-
-
-
-}
-else if($method == "PUT" || $method == "DELETE") {
-
-    /*$action = "D";
-    if ($method == 'PUT') {
-        $action = "U";
-    }
-
-    $sql = "INSERT INTO tbl_posting_history(posting_id, `action`, action_date, action_user,
-                old_money_signal, old_due_date, old_description, old_type, old_costumer, old_receipt)
-                VALUES(".$row->id.",
-                       '".$action."',
-                       '".$action_date."',
-                        ".$action_user.",
-                       '".$row->money_signal."',
-                       '".$row->due_date."',
-                       '".$row->description."',
-                        ".$row->type.",
-                        ".$row->costumer.",
-                       '".$row->receipt."')";
-
-    $history = mysqli_query($link,$sql);
-    if (!$history) {
-        http_response_code(500);
-        die(mysqli_error());
-    }*/
 }
 
 // print results, insert id or affected row count

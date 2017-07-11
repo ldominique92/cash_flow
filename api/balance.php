@@ -1,8 +1,4 @@
 <?php
-// get the HTTP method, path and body of the request
-$method = $_SERVER['REQUEST_METHOD'];
-$request = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
-
 include 'connection.php';
 
 $date = $_GET["date"];
@@ -49,11 +45,11 @@ if (!$result) {
     die(mysqli_error());
 }
 
-// print results, insert id or affected row count
-if ($method == 'GET' || $method == 'SEARCH') {
-    for ($i=0;$i<mysqli_num_rows($result);$i++) {
-        echo ($i>0?',':'').json_encode(mysqli_fetch_object($result));
-    }
+if($row = mysqli_fetch_object($result)) {
+    echo (json_encode($row));
+}
+else {
+    echo (json_encode(json_decode("{ \"value\" : \"0\" }")));
 }
 
 // close mysql connection

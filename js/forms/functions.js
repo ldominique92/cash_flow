@@ -59,9 +59,7 @@ function getCurrentDateForJS() {
     return (day.length == 2 ? day : '0' + day) + '/' + (month.length == 2 ? month : '0' + month) + '/' + year;
 }
 
-function formatMoney(text) {
-    var number = parseFloat(text);
-
+function formatMoney(number) {
     return number.toFixed(2).replace(/./g, function(c, i, a) {
         return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;
     });

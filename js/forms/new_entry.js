@@ -136,7 +136,7 @@ $(document).ready(function () {
     loadEntry();
 
     $('#due_date').mask('00/00/0000');
-    $('#money_value').mask("#,##0.00", {reverse: true});
+    $('#money_value').mask("#0.00", {reverse: true});
 
     saveButtonBehaviour();
     clearButtonBehaviour();
