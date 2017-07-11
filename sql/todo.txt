@@ -31,5 +31,14 @@
 36) colocar disable no username e lower case
 37) logout
 35) configurações do app
+36) transaction
+37) config dinamica
+38) readme
+40) adicionar valor no historico
+41) resources
+42) gerar scripts
+43) mascara de valor edit e listagem
+
 4) Usuários online
 6) Ultimo acesso
+7) gerar created date no backend
