@@ -1,6 +1,7 @@
 function cleanFormData() {
     $('#description').val('');
     $("#money_signal_in").prop("checked", true);
+    $('#money_value').val('');
     $('#type').val('');
     $('#costumer').val('');
     $('#due_date').val('');
@@ -109,6 +110,7 @@ function loadEntry() {
                 $('#costumer').val(entry.costumer);
                 $('#due_date').val(dateFormatToJS(entry.due_date));
                 $('#receipt').val(entry.receipt);
+                $('#money_value').val(entry.money_value);
 
                 if(entry.money_signal == '-') {
                     $("#money_signal_out").prop("checked", true);
@@ -134,6 +136,8 @@ $(document).ready(function () {
     loadEntry();
 
     $('#due_date').mask('00/00/0000');
+    $('#money_value').mask("#,##0.00", {reverse: true});
+
     saveButtonBehaviour();
     clearButtonBehaviour();
 });

@@ -44,6 +44,13 @@ include '../header.php';
                     </label>
                 </div>
             </div>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="money_value">Valor R$</label>
+                <div class="col-md-4">
+                    <input id="money_value" name="money_value" type="text" placeholder="" class="form-control input-md" required="">
+                </div>
+            </div>
 
             <!-- Select Basic -->
             <div class="form-group">

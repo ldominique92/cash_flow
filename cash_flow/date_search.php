@@ -53,6 +53,7 @@ include '../header.php';
             <tr>
                 <th>Data</th>
                 <th>Descrição</th>
+                <th>Valor</th>
                 <th>Tipo</th>
                 <th>Cliente/Fornecedor</th>
                 <th></th>

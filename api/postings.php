@@ -49,11 +49,12 @@ switch ($method) {
     case 'GET':
         $sql = "select * from `$table`".($key?" WHERE id=$key":''); break;
     case 'SEARCH':
-        $sql = "SELECT p.id, p.money_signal, p.due_date, p.description, pt.description as type, c.name as costumer, p.receipt ".
-               "FROM tbl_postings as p ".
-               "INNER JOIN tbl_posting_types as pt on p.type = pt.id ".
-               "INNER JOIN tbl_costumers as c on p.costumer = c.id ".
-               "WHERE due_date >= '$due_date_begin' and due_date <= '$due_date_end'";
+        $sql = "SELECT p.id, p.money_signal, p.due_date, p.description, pt.description as type, c.name as costumer, ".
+            "p.receipt, p.money_value ".
+            "FROM tbl_postings as p ".
+            "INNER JOIN tbl_posting_types as pt on p.type = pt.id ".
+            "INNER JOIN tbl_costumers as c on p.costumer = c.id ".
+            "WHERE due_date >= '$due_date_begin' and due_date <= '$due_date_end'";
         break;
     case 'PUT':
         $sql = "update `$table` set $set where id=$key"; break;
