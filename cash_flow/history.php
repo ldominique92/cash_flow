@@ -34,12 +34,12 @@ include '../header.php';
                     <div class="col-md-2">
                         <input id="end_date" name="end_date" type="text" placeholder="" class="form-control input-md" required="">
                     </div>
-                    <label class="col-md-1 control-label" for="user">Usuário</label>
+                    <!--<label class="col-md-1 control-label" for="user">Usuário</label>
                     <div class="col-md-2">
                         <select id="user" name="user" class="form-control">
                             <option value="">(Selecione)</option>
                         </select>
-                    </div>
+                    </div>-->
                     <div class="col-md-1">
                         <button id="btn_search" name="save" class="btn btn-default">Buscar</button>
                     </div>
