@@ -117,10 +117,7 @@ $site_url = "http://localhost/fluxo_de_caixa/";
                             <a href="<?php echo ($site_url); ?>cash_flow/date_search.php"> Relatório</a>
                         </li>
                         <li>
-                            <a href="<?php echo ($site_url); ?>cash/flow/hidto.php"> Histórico</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo ($site_url); ?>cash_flow/month.php"> Mensal</a>
+                            <a href="<?php echo ($site_url); ?>cash_flow/history.php"> Histórico</a>
                         </li>
                     </ul>
                 </li>
