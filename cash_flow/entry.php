@@ -23,10 +23,12 @@ include '../header.php';
             <div class="alert alert-success" id="success-message" style="display: none;">
                 Adicionado com sucesso
             </div>
+            <div class="alert alert-warning" id="error-message" style="display: none;">
+            </div>
             <!-- Text input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="description">Descrição</label>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input id="description" name="description" type="text" placeholder="" class="form-control input-md" required="">
                 </div>
             </div>
@@ -47,7 +49,7 @@ include '../header.php';
             <!-- Text input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="money_value">Valor R$</label>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input id="money_value" name="money_value" type="text" placeholder="" class="form-control input-md" required="">
                 </div>
             </div>
@@ -55,7 +57,7 @@ include '../header.php';
             <!-- Select Basic -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="type">Tipo</label>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <select id="type" name="type" class="form-control">
                         <option value="">(Selecione)</option>
                     </select>
@@ -65,7 +67,7 @@ include '../header.php';
             <!-- Select Basic -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="costumer">Cliente/Fornecedor</label>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <select id="costumer" name="costumer" class="form-control">
                         <option value="">(Selecione)</option>
                     </select>
@@ -75,14 +77,14 @@ include '../header.php';
             <!-- Text input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="due_date">Data prevista</label>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input id="due_date" name="due_date" type="text" placeholder="" class="form-control input-md" required="">
                 </div>
             </div>
             <!-- File Button -->
-            <div class="form-group">
+            <div class="form-group" style="display: none;">
                 <label class="col-md-4 control-label" for="receipt">Anexar comprovante</label>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input id="receipt" name="receipt" class="input-file" type="file">
                 </div>
             </div>
@@ -99,6 +101,7 @@ include '../header.php';
     </div>
 </div>
 <script src="<?php echo ($site_url); ?>js/plugins/jquery-mask.js"></script>
+<script src="<?php echo ($site_url); ?>js/plugins/jquery.validate.js"></script>
 <script src="<?php echo ($site_url); ?>js/forms/functions.js"></script>
 <script src="<?php echo ($site_url); ?>js/forms/new_entry.js"></script>
 <?php

@@ -40,3 +40,11 @@ h4.balance
 div.timeliner div.date_separator[id*="timeliner-add-btn"] {
 	display: none;
 }
+
+label.error{
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	color: #a94442;
+	font-weight: normal;
+}

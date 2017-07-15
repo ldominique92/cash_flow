@@ -64,22 +64,59 @@ function saveButtonBehaviour(){
 
         var id = getParameterByName("id", window.location.href);
         var form = $('form');
-        var form_data = getFormData(form);
-        var form_action = form.attr('action');
-        var form_method = form.attr('method');
-
-        form_data.due_date = dateFormat(form_data.due_date);
-        form_data.created_date = getCurrentDateForDatabase();
-
-        $.ajax({
-            url: form_action + (form_method == "PUT" ? '/' + id : ''),
-            data: JSON.stringify(form_data),
-            type: form_method,
-            success: function () {
-                cleanFormData();
-                $('#success-message').fadeIn();
+        form.validate(
+            {
+                lang: 'pt',
+                rules: {
+                    description: {
+                        required: true,
+                        maxlength: 100
+                    },
+                    money_signal: {
+                        required: true,
+                        maxlength: 1
+                    },
+                    money_value: {
+                        required: true,
+                        number: true
+                    },
+                    type: {
+                        required: true
+                    }
+                    ,
+                    costumer: {
+                        required: true
+                    },
+                    due_date: {
+                        required: true,
+                        brazilianDate: true
+                    }
+                }
             }
-        });
+        );
+
+        if(form.valid()) {
+            var form_data = getFormData(form);
+            var form_action = form.attr('action');
+            var form_method = form.attr('method');
+
+            form_data.due_date = dateFormat(form_data.due_date);
+            form_data.created_date = getCurrentDateForDatabase();
+
+            $.ajax({
+                url: form_action + (form_method == "PUT" ? '/' + id : ''),
+                data: JSON.stringify(form_data),
+                type: form_method,
+                success: function () {
+                    cleanFormData();
+                    $('#success-message').fadeIn();
+                }
+            });
+        }
+        else
+        {
+            return false;
+        }
     });
 }
 
@@ -140,4 +177,13 @@ $(document).ready(function () {
 
     saveButtonBehaviour();
     clearButtonBehaviour();
+
+    $.validator.addMethod(
+        "brazilianDate",
+        function(value, element) {
+            // put your own logic here, this is just a (crappy) example
+            return value.match(/^\d\d?\/\d\d?\/\d\d\d\d$/);
+        },
+        "Por favor informe uma data no formato dd/mm/yyyy."
+    );
 });
