@@ -36,3 +36,7 @@ h4.balance
 	display: inline-block;
 	text-align: right;
 }
+
+div.timeliner div.date_separator[id*="timeliner-add-btn"] {
+	display: none;
+}
