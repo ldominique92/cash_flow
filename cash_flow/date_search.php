@@ -23,7 +23,7 @@ include '../header.php';
             <fieldset>
                 <legend id="form_legend">Buscar Datas</legend>
                 <div class="alert alert-danger" id="error-message" style="display: none;">
-                    Não há lançamentos para esse dia
+                    Não há lançamentos para a data informada
                 </div>
                 <div class="form-group">
                     <label class="col-md-1 control-label" for="due_date_begin">De</label>
