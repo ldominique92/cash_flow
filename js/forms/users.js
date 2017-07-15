@@ -117,22 +117,48 @@ function deleteButtonBehaviour() {
 function saveButtonBehaviour(){
     $('#btn_save').on('click', function() {
         $('#success-message').fadeOut();
-        var form_data = JSON.stringify(getFormData($('form')));
-        var form_action = $('form').attr('action');
-        var form_method = $('form').attr('method');
 
-        $.ajax({
-            url: form_action,
-            data: form_data,
-            type: form_method,
-            success: function () {
-                cleanFormData();
-                $('#success-message').fadeIn();
-
-                loadUsers();
+        var form = $('form');
+        form.validate(
+            {
+                lang: 'pt',
+                rules: {
+                    username: {
+                        required: true,
+                        maxlength: 15
+                    },
+                    id_role: {
+                        required: true
+                    },
+                    first_name: {
+                        required: true,
+                        maxlength: 15
+                    },
+                    full_name: {
+                        required: true,
+                        maxlength: 50
+                    }
+                }
             }
-        });
+        );
 
+        if(form.valid()) {
+            var form_data = JSON.stringify(getFormData($('form')));
+            var form_action = $('form').attr('action');
+            var form_method = $('form').attr('method');
+
+            $.ajax({
+                url: form_action,
+                data: form_data,
+                type: form_method,
+                success: function () {
+                    cleanFormData();
+                    $('#success-message').fadeIn();
+
+                    loadUsers();
+                }
+            });
+        }
         return false;
     });
 }
