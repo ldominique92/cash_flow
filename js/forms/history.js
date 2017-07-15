@@ -27,6 +27,9 @@ function resetForm() {
     $('#begin_date').val(date);
     $('#end_date').val(date);
 
+    $('#begin_date').mask('00/00/0000');
+    $('#end_date').mask('00/00/0000');
+
     searchHistory();
 
     $('#error-message').fadeOut();

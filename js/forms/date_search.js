@@ -4,6 +4,9 @@ function resetForm() {
     $('#due_date_begin').val(date);
     $('#due_date_end').val(date);
 
+    $('#due_date_begin').mask('00/00/0000');
+    $('#due_date_end').mask('00/00/0000');
+
     searchPostings();
 
     $('#error-message').fadeOut();
