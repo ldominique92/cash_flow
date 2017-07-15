@@ -58,7 +58,6 @@ function searchPostings() {
 
                 $('#postings-list tbody').html(postings);
                 deleteButtonBehaviour();
-                loadBalance();
             }
             else
             {
@@ -67,6 +66,8 @@ function searchPostings() {
             }
         }
     });
+
+    loadBalance();
 }
 
 function loadBalance() {
@@ -85,7 +86,7 @@ function loadBalance() {
                 url: form_action + '?date=' + final_day + '&type=final',
                 type: 'GET',
                 success: function (result) {
-                    var final_value = initial_value + parseFloat(JSON.parse(result).value);
+                    var final_value = parseFloat(JSON.parse(result).value);
 
                     $('#final_balance').text(formatMoney(final_value));
                 }
@@ -96,6 +97,8 @@ function loadBalance() {
 
 function searchButtonBehaviour(){
     $('#btn_search').on('click', function() {
+        $('#error-message').fadeOut();
+
         searchPostings();
         return false;
     });

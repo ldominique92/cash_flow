@@ -35,7 +35,8 @@ if($type == "initial")
     $date = "$year-$month-$day";
 }
 
-$sql = "select * from `tbl_balance` WHERE date = '$date'";
+$sql = "select * from `tbl_balance` WHERE date <= '$date' ORDER BY date DESC";
+
 // excecute SQL statement
 $result = mysqli_query($link,$sql);
 

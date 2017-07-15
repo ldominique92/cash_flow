@@ -202,6 +202,17 @@ if($method == 'PUT' || $method == 'POST' || $method == 'DELETE'){
 
     if(mysqli_num_rows($r_balance) == 0)
     {
+        // Get last balance
+        $sql = "select * from `tbl_balance` WHERE date < '$due_date' ORDER BY date DESC";
+        $r_balance = mysqli_query($link,$sql);
+        if (!$r_balance) {
+            http_response_code(500);
+            die(mysqli_error());
+        }
+
+        $balance = mysqli_fetch_object($r_balance);
+        $value = $balance->value + $value;
+
         $sql = "INSERT INTO tbl_balance(date, value) VALUES ('".$due_date."', $value)";
         $r_balance = mysqli_query($link,$sql);
         if (!$r_balance) {
