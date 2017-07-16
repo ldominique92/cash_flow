@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+$show_message = false;
+
 if(isset($_SESSION["user_id"]))
 {
     header('Location: index.php');
@@ -26,24 +28,28 @@ if(isset($_POST["username"])) {
         die(mysqli_error());
     }
 
-    $row = mysqli_fetch_object($result);
+    if($row = mysqli_fetch_object($result)) {
 
-    session_start();
-    $_SESSION["logged_user"] = $row->username;
-    $_SESSION["user_name"] = $row->first_name;
-    $_SESSION["user_id"] = $row->id;
-    $_SESSION["user_role"] = $row->id_role;
+        session_start();
+        $_SESSION["logged_user"] = $row->username;
+        $_SESSION["user_name"] = $row->first_name;
+        $_SESSION["user_id"] = $row->id;
+        $_SESSION["user_role"] = $row->id_role;
 
-    $change_password = $row->change_password;
+        $change_password = $row->change_password;
 
-    // close mysql connection
-    mysqli_close($link);
+        // close mysql connection
+        mysqli_close($link);
 
-    if($change_password) {
-        header('Location: change_password.php');
+        if($change_password) {
+            header('Location: change_password.php');
+        }
+        else {
+            header('Location: index.php');
+        }
     }
     else {
-        header('Location: index.php');
+        $show_message = true;
     }
 }
 ?>
@@ -119,6 +125,9 @@ if(isset($_POST["username"])) {
             <div class="row">
                 <div class="col-lg-6">
                     <form class="form-horizontal" method="POST">
+                        <div class="alert alert-danger" id="error-message" style="display: <?php echo($show_message ? "block;" : "none"); ?>;">
+                            Login e senha incorretos
+                        </div>
                         <!-- Text input-->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="username">Login</label>
@@ -159,6 +168,9 @@ if(isset($_POST["username"])) {
 <script src="<?php echo ($site_url); ?>js/plugins/morris/raphael.min.js"></script>
 <script src="<?php echo ($site_url); ?>js/plugins/morris/morris.min.js"></script>
 <script src="<?php echo ($site_url); ?>js/plugins/morris/morris-data.js"></script>
+
+<script src="<?php echo ($site_url); ?>js/plugins/jquery.validate.js"></script>
+<script src="<?php echo ($site_url); ?>js/forms/login.js"></script>
 
 </body>
 
