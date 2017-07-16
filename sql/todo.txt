@@ -1,7 +1,3 @@
-10) Validar forms
-12) deixar isso bonito pelo amor de Deus
-13) paginação de grids
-14) colocar loading nos grids
 15) autenticar API
 16) anexar comprovante
 15) salvar usuário do registro
