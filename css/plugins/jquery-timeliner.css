@@ -224,16 +224,16 @@ div.timeliner_element.green div.timeliner_title {
 	color: #EEEEEE;
 }
 div.timeliner_element.bricky {
-	background-color: #C83A2A;
+	background-color: #a94442;
 	border-color: #B33426;
 	color: #FFFFFF;
 }
 div.timeliner_element.bricky:after {
-	background-color: #C83A2A;
+	background-color: #a94442;
 }
 div.timeliner_element.bricky:hover:after {
 	background-color: #FFFFFF;
-	border: 1px solid #C83A2A;
+	border: 1px solid #a94442;
 	z-index: 100;
 }
 div.timeliner_element.bricky div.timeliner_title {
