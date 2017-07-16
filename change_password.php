@@ -162,7 +162,8 @@ if(isset($_POST["new_password"])) {
 <script src="<?php echo ($site_url); ?>js/plugins/morris/raphael.min.js"></script>
 <script src="<?php echo ($site_url); ?>js/plugins/morris/morris.min.js"></script>
 <script src="<?php echo ($site_url); ?>js/plugins/morris/morris-data.js"></script>
-
+<script src="<?php echo ($site_url); ?>js/plugins/jquery.validate.js"></script>
+<script src="<?php echo ($site_url); ?>js/forms/change_password.js"></script>
 </body>
 
 </html>
