@@ -113,21 +113,44 @@ function radioBehaviour () {
 function saveButtonBehaviour(){
     $('#btn_save').on('click', function() {
         $('#success-message').fadeOut();
-        var form_data = JSON.stringify(getFormData($('form')));
-        var form_action = $('form').attr('action');
-        var form_method = $('form').attr('method');
 
-        $.ajax({
-            url: form_action,
-            data: form_data,
-            type: form_method,
-            success: function () {
-                cleanFormData();
-                $('#success-message').fadeIn();
-
-                loadCostumers();
+        var form = $('form');
+        form.validate(
+            {
+                lang: 'pt',
+                rules: {
+                    name: {
+                        required: true,
+                        maxlength: 100
+                    },
+                    person_type: {
+                        required: true
+                    },
+                    cnpj: {
+                        required: true,
+                        maxlength: 50
+                    }
+                }
             }
-        });
+        );
+
+        if(form.valid()) {
+            var form_data = JSON.stringify(getFormData(form));
+            var form_action = $('form').attr('action');
+            var form_method = $('form').attr('method');
+
+            $.ajax({
+                url: form_action,
+                data: form_data,
+                type: form_method,
+                success: function () {
+                    cleanFormData();
+                    $('#success-message').fadeIn();
+
+                    loadCostumers();
+                }
+            });
+        }
 
         return false;
     });
