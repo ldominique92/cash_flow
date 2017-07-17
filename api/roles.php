@@ -1,5 +1,11 @@
 <?php
+session_start();
 
-$table = 'tbl_roles';
+if(isset($_SESSION["user_id"])) {
+    $table = 'tbl_roles';
 
-include 'base.php';
+    include 'base.php';
+}
+else {
+    http_response_code(403);
+}
