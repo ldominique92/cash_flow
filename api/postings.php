@@ -2,11 +2,13 @@
 session_start();
 
 if(isset($_SESSION["user_id"])) {
+    $user = $_SESSION["user_id"];
+
     $table = 'tbl_postings';
 
     date_default_timezone_set("America/Sao_Paulo");
     $action_date = date("Y-m-d h:i:s");
-    $action_user = 0;
+    $action_user = $user;
 
 // get the HTTP method, path and body of the request
     $method = $_SERVER['REQUEST_METHOD'];
@@ -18,7 +20,7 @@ if(isset($_SESSION["user_id"])) {
     include 'connection.php';
 
 // build the SET part of the SQL command
-    $set = '';
+    $set = [];
     if($method != 'GET' && $method != 'DELETE') {
         $columns = preg_replace('/[^a-z0-9_]+/i','',array_keys($input));
         $values = array_map(function ($value) use ($link) {
@@ -27,9 +29,10 @@ if(isset($_SESSION["user_id"])) {
         },array_values($input));
 
         for ($i = 0; $i < count($columns); $i++) {
-            $set .= ($i > 0 ? ',' : '') . '`' . $columns[$i] . '`=';
-            $set .= ($values[$i] === null ? 'NULL' : '"' . $values[$i] . '"');
+            $set[$columns[$i]] = $values[$i];
         }
+
+        $set["created_by"] = $user;
     }
     else if($method == 'GET' && $key == 0)
     {
@@ -59,14 +62,24 @@ if(isset($_SESSION["user_id"])) {
                 "WHERE due_date >= '$due_date_begin' and due_date <= '$due_date_end'";
             break;
         case 'PUT':
-            $sql = "update `$table` set $set where id=$key"; break;
+            $sql = "update `$table` set ".
+                   "description = '".$set["description"]."', type = ".$set["type"].
+                   ", money_signal = '".$set["money_signal"]."', money_value=".$set["money_value"].
+                   ", costumer = ".$set["costumer"].", due_date = '".$set["due_date"].
+                   "' where id=$key";
+
+                    break;
         case 'POST':
-            $sql = "insert into `$table` set $set"; break;
+            $sql = "insert into $table".
+                   "(description,type,money_signal,money_value,created_date,created_by,costumer,due_date,receipt) ".
+                   " VALUES ('".$set["description"]."', ".$set["type"].", '".$set["money_signal"]."', ".
+                   $set["money_value"].", '".$set["created_date"]."', ".$set["created_by"].", ".$set["costumer"].
+                   ", '".$set["due_date"]."', '".$set["receipt"]."')"; break;
         case 'DELETE':
             $sql = "delete from `$table` where id=$key"; break;
     }
 
-// excecute SQL statement
+    // excecute SQL statement
     $result = mysqli_query($link,$sql);
 
 // die if SQL statement failed
