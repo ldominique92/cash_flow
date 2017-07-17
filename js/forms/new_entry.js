@@ -173,6 +173,7 @@ $(document).ready(function () {
     loadEntry();
 
     $('#due_date').mask('00/00/0000');
+    $('#due_date').datepicker({ language : "pt-BR"});
     $('#money_value').mask("#0.00", {reverse: true});
 
     saveButtonBehaviour();

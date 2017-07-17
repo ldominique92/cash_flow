@@ -49,6 +49,7 @@ $site_url = "http://localhost/fluxo_de_caixa/";
 
     <!-- jQuery -->
     <script src="<?php echo ($site_url); ?>js/jquery.js"></script>
+    <link href="<?php echo ($site_url); ?>css/plugins/datepicker/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>

@@ -1,7 +1,6 @@
 <?php
 include 'header.php';
 ?>
-<link href="<?php echo ($site_url); ?>css/plugins/datepicker/datepicker.less" rel="stylesheet/less">
 <script src="<?php echo ($site_url); ?>js/plugins/datepicker/bootstrap-datepicker.js"></script>
 <link href="<?php echo ($site_url); ?>css/plugins/jquery-timeliner.css" rel="stylesheet">
 <script src="<?php echo ($site_url); ?>js/plugins/jquery-timeliner.js"></script>
