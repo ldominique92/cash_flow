@@ -17,16 +17,18 @@ function resetForm() {
 
 function deleteButtonBehaviour() {
     $('.delete-posting').on('click', function () {
-        var id = $(this).data('id');
-        var form_action = $('form').attr('action') + '/' + id;
+        if(confirm("Tem certeza que deseja deletar esse registro?")) {
+            var id = $(this).data('id');
+            var form_action = $('form').attr('action') + '/' + id;
 
-        $.ajax({
-            url: form_action,
-            type: 'DELETE',
-            success: function () {
-                searchPostings();
-            }
-        });
+            $.ajax({
+                url: form_action,
+                type: 'DELETE',
+                success: function () {
+                    searchPostings();
+                }
+            });
+        }
 
         return false;
     });
