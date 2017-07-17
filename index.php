@@ -123,7 +123,7 @@ if($row = mysqli_fetch_object($result)) {
                                         </div>
                                         <div class="content">
                                             <?php
-                                            echo ("R$ ".$row->money_signal.$row->money_value." ");
+                                            echo ("R$ ".$row->money_signal.number_format($row->money_value, 2, ",", "")." ");
                                             if($row->money_signal == "+") {
                                                 echo("recebido de");
                                             }

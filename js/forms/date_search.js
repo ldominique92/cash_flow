@@ -51,7 +51,7 @@ function searchPostings() {
                         '<tr class="' + (posting.money_signal == '+' ?  'bg-success' : 'bg-danger') + '">' +
                         '<td>' + dateFormatToJS(posting.due_date) + '</td>' +
                         '<td>' + posting.description + '</td>' +
-                        '<td>' + posting.money_value + '</td>' +
+                        '<td> R$ ' + posting.money_signal + formatMoney(parseFloat(posting.money_value)) + '</td>' +
                         '<td>' + posting.type + '</td>' +
                         '<td>' + posting.costumer + '</td>' +
                         '<td>' +
