@@ -30,6 +30,9 @@ function resetForm() {
     $('#begin_date').mask('00/00/0000');
     $('#end_date').mask('00/00/0000');
 
+    $('#begin_date').datepicker({ language : "pt-BR"});
+    $('#end_date').datepicker({ language : "pt-BR"});
+
     searchHistory();
 
     $('#error-message').fadeOut();
@@ -55,16 +58,10 @@ function searchHistory() {
                         '<td>' + dateFormatToJS(posting.action_date) + '</td>' +
                         '<td>' + (posting.action == 'A' ?  'ADICIONOU' : (posting.action == 'U' ? 'ALTEROU' : 'DELETOU')) + '</td>' +
                         '<td>' + posting.username + '</td>' +
-                        '<td>' +
-                        (posting.receipt == null ? '' : '<a href="../files/receipt/' + posting.receipt + '"><i class="fa fa-download"></i></a>') +
-                        '&nbsp;<a href="entry.php?id=' + posting.id + '"><i class="fa fa-pencil-square-o"></i></a>' +
-                        '&nbsp;<a href="#" class="delete-posting" data-id="' + posting.id + '"><i class="fa fa-trash-o"></i></a>' +
-                        '</td>' +
                         '</tr>'
                 });
 
                 $('#postings-list tbody').html(html_code);
-                deleteButtonBehaviour();
             }
             else
             {

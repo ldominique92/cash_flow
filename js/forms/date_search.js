@@ -7,6 +7,9 @@ function resetForm() {
     $('#due_date_begin').mask('00/00/0000');
     $('#due_date_end').mask('00/00/0000');
 
+    $('#due_date_begin').datepicker({ language : "pt-BR"});
+    $('#due_date_end').datepicker({ language : "pt-BR"});
+
     searchPostings();
 
     $('#error-message').fadeOut();

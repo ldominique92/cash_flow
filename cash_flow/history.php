@@ -56,7 +56,6 @@ include '../header.php';
                     <th>Data</th>
                     <th>Ação</th>
                     <th>Usuário</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
