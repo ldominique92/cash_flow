@@ -112,6 +112,8 @@ function saveButtonBehaviour(){
                     $('#success-message').fadeIn();
                 }
             });
+
+            return false;
         }
         else
         {
