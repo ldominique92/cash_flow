@@ -68,8 +68,9 @@ include '../header.php';
 <div class="row">
     <h4 class="balance col-lg-12">Saldo Final R$ <span id="final_balance" name="final_balance" type="text"></span></h4>
 </div>
-<script src="<?php echo ($site_url); ?>js/plugins/jquery-mask.js"></script>
-<script src="<?php echo ($site_url); ?>js/forms/functions.js"></script>
+<?php
+include '../form_plugins.php';
+?>
 <script src="<?php echo ($site_url); ?>js/forms/date_search.js"></script>
 <?php
 include '../footer.php';

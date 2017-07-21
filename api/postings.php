@@ -17,10 +17,10 @@ if(isset($_SESSION["user_id"])) {
     $pop = array_pop($request);
     $key = is_numeric($pop) ? $pop+0 : 0;
 
-    include 'connection.php';
+    $set = [];
+    include 'header.php';
 
 // build the SET part of the SQL command
-    $set = [];
     if($method != 'GET' && $method != 'DELETE') {
         $columns = preg_replace('/[^a-z0-9_]+/i','',array_keys($input));
         $values = array_map(function ($value) use ($link) {

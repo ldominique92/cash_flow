@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if(isset($_SESSION["user_id"])) {
-    include 'connection.php';
+if (isset($_SESSION["user_id"])) {
+    include 'header.php';
 
     $date = $_GET["date"];
     $type = $_GET["type"];
@@ -12,17 +12,20 @@ if(isset($_SESSION["user_id"])) {
         $month = substr($date, 5, 2);
         $year = substr($date, 0, 4);
 
+        $smaller_months = array(2, 4, 6, 8, 9, 11);
+        $bigger_months = array(5, 7, 10, 12);
+
         if ($month == 1 && $day == 1) {
             $day = 31;
             $month = 12;
             $year--;
-        } else if (($month == 2 || $month == 4 || $month == 6 || $month == 8 || $month == 9 || $month == 11) && ($day == 1)) {
+        } else if (in_array($month, $smaller_months) && $day == 1) {
             $day = 31;
             $month--;
         } else if ($month == 3 && $day == 1) {
             $day = $year % 4 == 0 ? 29 : 28;
             $month--;
-        } else if (($month == 5 || $month == 7 || $month == 10 || $month == 12) && ($day == 1)) {
+        } else if (in_array($month, $bigger_months) && $day == 1) {
             $day = 30;
             $month--;
         } else {
@@ -34,14 +37,7 @@ if(isset($_SESSION["user_id"])) {
 
     $sql = "select * from `tbl_balance` WHERE date <= '$date' ORDER BY date DESC";
 
-// excecute SQL statement
-    $result = mysqli_query($link, $sql);
-
-// die if SQL statement failed
-    if (!$result) {
-        http_response_code(404);
-        die(mysqli_error());
-    }
+    $result = executeQuery($link, $sql);
 
     if ($row = mysqli_fetch_object($result)) {
         echo(json_encode($row));
@@ -51,7 +47,6 @@ if(isset($_SESSION["user_id"])) {
 
 // close mysql connection
     mysqli_close($link);
-}
-else {
+} else {
     http_response_code(403);
 }

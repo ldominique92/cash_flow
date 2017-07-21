@@ -64,8 +64,9 @@ include '../header.php';
         </table>
     </div>
 </div>
-<script src="<?php echo ($site_url); ?>js/plugins/jquery-mask.js"></script>
-<script src="<?php echo ($site_url); ?>js/forms/functions.js"></script>
+<?php
+include '../form_plugins.php';
+?>
 <script src="<?php echo ($site_url); ?>js/forms/history.js"></script>
 <?php
 include '../footer.php';
